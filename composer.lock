@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cddddfab95562322cdbf44be411a0f61",
+    "content-hash": "1cbb01f2489d940ed5c3bc5278cf7428",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1524,6 +1524,59 @@
                 }
             ],
             "time": "2023-05-16T13:18:04+00:00"
+        },
+        {
+            "name": "internations/admin-bundle",
+            "version": "0.1.0",
+            "dist": {
+                "type": "path",
+                "url": "./bundle/Internations/AdminBundle",
+                "reference": "73aa4141e78b5be1fa8cdcab14373e16b1bfe7f8"
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Internations\\AdminBundle\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Internations\\AdminBundle\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "compile": [
+                    "@php -dphar.readonly=0 bin/compile"
+                ],
+                "test": [
+                    "@php simple-phpunit"
+                ],
+                "phpstan": [
+                    "@php vendor/bin/phpstan analyse --configuration=phpstan/config.neon"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mahmoud Abdelsattar",
+                    "email": "i@mahmoudabdelsattar.com",
+                    "homepage": "http://mahmoudabdelsattar.com"
+                }
+            ],
+            "description": "A custom bundlt to handle toe users by an admin role",
+            "support": {
+                "issues": "https://github.com/composer/composer/issues",
+                "irc": "ircs://irc.libera.chat:6697/composer",
+                "security": "https://github.com/composer/composer/security/policy"
+            },
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "laminas/laminas-code",

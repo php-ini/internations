@@ -35,6 +35,9 @@
             "migrations/.gitignore"
         ]
     },
+    "internations/admin-bundle": {
+        "version": "0.1.0"
+    },
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {
