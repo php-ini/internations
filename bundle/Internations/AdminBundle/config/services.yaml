@@ -12,3 +12,7 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
     Internations\AdminBundle\Controller\AdminController: ~
+
+    Internations\AdminBundle\Controller\UserController: ~
+
+    Internations\AdminBundle\Repository\UserRepository: ~
