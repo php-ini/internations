@@ -70,7 +70,7 @@ class UserFormType extends AbstractType
             ->add('is_active', CheckboxType::class, [
                 'label'    => 'Active user?',
                 'required' => false,
-                'attr' => ['checked' => 'checked'],
+                'attr' => [],
                 'label_attr' => [
                     'class' => 'checkbox-switch',
                 ],
@@ -79,7 +79,7 @@ class UserFormType extends AbstractType
                 ],
 
             ])
-            ->add('save', SubmitType::class, ['label' => 'Create User'])
+            ->add('save', SubmitType::class, ['label' => 'Save User'])
         ;
     }
 

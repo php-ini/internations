@@ -4,6 +4,10 @@
     Internations Dashboard
 {% endblock %}
 
+{% block breadcrumb %}
+    {% include '@InternationsAdmin/partials/breadcrumb.html.twig' with {page: 'Dashboard'} %}
+{% endblock %}
+
 {% block body %}
     <div class="container-fluid py-4">
         <div class="row">

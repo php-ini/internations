@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Internations\AdminBundle\Controller;
 
+use Doctrine\ORM\EntityNotFoundException;
 use Internations\AdminBundle\Entity\User;
 use Internations\AdminBundle\Form\UserFormType;
 use Internations\AdminBundle\Repository\UserRepository;
@@ -64,5 +65,43 @@ class UserController extends AbstractController
         return $this->render('@InternationsAdmin/users/create.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('/internations/users/edit/{id}', name: 'internations_users_edit')]
+    public function edit($id, Request $request): Response
+    {
+//        $this->checkLoggedInUser($id);
+        $user = $this->userRepository->find($id);
+        $form = $this->createForm(UserFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->userRepository->save($form->getData(), true);
+            $this->addFlash('success', 'Success! User was saved.');
+
+            return $this->redirectToRoute('internations_users');
+        }
+
+        return $this->render('@InternationsAdmin/users/create.html.twig', [
+            'user' => $user,
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/internations/users/delete/{id}', methods: ['GET', 'DELETE'], name: 'internations_users_delete')]
+    public function delete($id): Response
+    {
+//        $this->checkLoggedInUser($id);
+        $user = $this->userRepository->find($id);
+
+        if (!$user instanceof User) {
+            throw new EntityNotFoundException('No user found!');
+        }
+
+        $this->userRepository->remove($user, true);
+
+        $this->addFlash('success', 'Success! User was deleted.');
+
+        return $this->redirectToRoute('internations_users');
     }
 }

@@ -29,7 +29,7 @@ class User
         message: 'The email {{ value }} is not a valid email.',
     )]
     #[Assert\NotBlank]
-    #[CustomAssert\DuplicateEmail]
+
     private ?string $email = null;
 
     #[ORM\Column(length: 30)]
