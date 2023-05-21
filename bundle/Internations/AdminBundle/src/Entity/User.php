@@ -8,6 +8,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Internations\AdminBundle\Enum\Roles;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraint as Assert;
 use Internations\AdminBundle\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -15,7 +18,7 @@ use Internations\AdminBundle\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email')]
-final class User
+final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -31,7 +34,6 @@ final class User
         message: 'The email {{ value }} is not a valid email.',
     )]
     #[Assert\NotBlank]
-
     private ?string $email = null;
 
     #[ORM\Column(length: 30)]
@@ -58,7 +60,8 @@ final class User
     #[ORM\ManyToMany(targetEntity: Groups::class)]
     private $groups;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->groups = new ArrayCollection();
     }
 
@@ -182,7 +185,16 @@ final class User
 
     public function isAdmin()
     {
-        return in_array('admin', $this->roles);
+//        return in_array(Roles::ADMIN_ROLE, $this->roles);
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string)$this->email;
     }
 
     public function __toString(): string

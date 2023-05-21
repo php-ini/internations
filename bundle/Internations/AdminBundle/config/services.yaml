@@ -17,6 +17,8 @@ services:
 
     Internations\AdminBundle\Controller\GroupController: ~
 
+    Internations\AdminBundle\Controller\LoginController: ~
+
     Internations\AdminBundle\Repository\UserRepository: ~
 
     Internations\AdminBundle\Repository\GroupsRepository: ~

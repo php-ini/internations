@@ -67,7 +67,7 @@ final class Groups
 
     public function getLkpUsersCount(): ?int
     {
-        return $this->lkp_users_count;
+        return count($this->users);
     }
 
     public function setLkpUsersCount(?int $lkp_users_count): self

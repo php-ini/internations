@@ -12,7 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Internations\AdminBundle\Form\UserFormType;
 use Internations\AdminBundle\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
@@ -26,6 +28,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/internations/users', name: 'internations_users')]
+    #[IsGranted('ROLE_USER')]
     public function index(): Response
     {
         $users = $this->userRepository->findAll();
@@ -36,7 +39,8 @@ class UserController extends AbstractController
     }
 
     #[Route('/internations/users/create', name: 'internations_users_create')]
-    public function create(Request $request): Response
+    #[IsGranted('ROLE_ADMIN')]
+    public function create(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
         $form = $this->createForm(UserFormType::class, $user);
@@ -47,6 +51,8 @@ class UserController extends AbstractController
 
             try {
 
+                $hashedPassword = $passwordHasher->hashPassword($newUser, $form->get('password')->getData());
+                $newUser->setPassword($hashedPassword);
                 $this->userRepository->create($newUser);
 
             } catch (\Exception $e) {
@@ -68,9 +74,9 @@ class UserController extends AbstractController
     }
 
     #[Route('/internations/users/edit/{id}', name: 'internations_users_edit')]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit($id, Request $request): Response
     {
-//        $this->checkLoggedInUser($id);
         $user = $this->userRepository->find($id);
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($request);
@@ -89,9 +95,9 @@ class UserController extends AbstractController
     }
 
     #[Route('/internations/users/delete/{id}', methods: ['GET', 'DELETE'], name: 'internations_users_delete')]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete($id): Response
     {
-//        $this->checkLoggedInUser($id);
         $user = $this->userRepository->find($id);
 
         if (!$user instanceof User) {

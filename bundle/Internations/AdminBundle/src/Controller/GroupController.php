@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Internations\AdminBundle\Form\GroupsFormType;
 use Internations\AdminBundle\Repository\GroupsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class GroupController extends AbstractController
 {
@@ -28,6 +29,7 @@ class GroupController extends AbstractController
     }
 
     #[Route('/internations/' . self::SUB_DOMAIN_NAME, name: 'internations_' . self::SUB_DOMAIN_NAME)]
+    #[IsGranted('ROLE_USER')]
     public function index(): Response
     {
         $groups = $this->{self::SUB_DOMAIN_NAME . 'Repository'}->findAll();
@@ -38,6 +40,7 @@ class GroupController extends AbstractController
     }
 
     #[Route('/internations/' . self::SUB_DOMAIN_NAME . '/create', name: 'internations_' . self::SUB_DOMAIN_NAME . '_create')]
+    #[IsGranted('ROLE_ADMIN')]
     public function create(Request $request): Response
     {
         $groups = new Groups();
@@ -70,9 +73,9 @@ class GroupController extends AbstractController
     }
 
     #[Route('/internations/' . self::SUB_DOMAIN_NAME . '/edit/{id}', name: 'internations_' . self::SUB_DOMAIN_NAME . '_edit')]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit($id, Request $request): Response
     {
-//        $this->checkLoggedInUser($id);
         $group = $this->{self::SUB_DOMAIN_NAME . 'Repository'}->find($id);
         $form = $this->createForm(GroupsFormType::class, $group);
         $form->handleRequest($request);
@@ -91,9 +94,9 @@ class GroupController extends AbstractController
     }
 
     #[Route('/internations/' . self::SUB_DOMAIN_NAME . '/delete/{id}', methods: ['GET', 'DELETE'], name: 'internations_' . self::SUB_DOMAIN_NAME . '_delete')]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete($id): Response
     {
-//        $this->checkLoggedInUser($id);
         $group = $this->{self::SUB_DOMAIN_NAME . 'Repository'}->find($id);
 
         if (!$group instanceof Groups) {
