@@ -15,6 +15,10 @@ services:
 
     Internations\AdminBundle\Controller\UserController: ~
 
+    Internations\AdminBundle\Controller\GroupController: ~
+
     Internations\AdminBundle\Repository\UserRepository: ~
+
+    Internations\AdminBundle\Repository\GroupsRepository: ~
 
     Internations\AdminBundle\Validator\Constraints\DuplicateEmailValidator: ~
