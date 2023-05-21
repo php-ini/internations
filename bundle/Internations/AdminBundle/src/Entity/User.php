@@ -7,8 +7,12 @@ namespace Internations\AdminBundle\Entity;
 use Internations\AdminBundle\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraint as Assert;
+use Internations\AdminBundle\Validator\Constraints as CustomAssert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity('email')]
 class User
 {
     #[ORM\Id]
@@ -16,10 +20,16 @@ class User
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: false)]
+    #[CustomAssert\CheckName]
     private ?string $name = null;
 
-    #[ORM\Column(length: 60)]
+    #[ORM\Column(name: 'email', type: 'string', length: 60, unique: true)]
+    #[Assert\Email(
+        message: 'The email {{ value }} is not a valid email.',
+    )]
+    #[Assert\NotBlank]
+    #[CustomAssert\DuplicateEmail]
     private ?string $email = null;
 
     #[ORM\Column(length: 30)]

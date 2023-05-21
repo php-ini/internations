@@ -16,3 +16,5 @@ services:
     Internations\AdminBundle\Controller\UserController: ~
 
     Internations\AdminBundle\Repository\UserRepository: ~
+
+    Internations\AdminBundle\Validator\Constraints\DuplicateEmailValidator: ~
