@@ -24,3 +24,5 @@ services:
     Internations\AdminBundle\Repository\GroupsRepository: ~
 
     Internations\AdminBundle\Validator\Constraints\DuplicateEmailValidator: ~
+
+    Internations\AdminBundle\Service\UserService: ~

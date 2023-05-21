@@ -7,6 +7,7 @@ namespace Internations\AdminBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Internations\AdminBundle\Entity\User;
+use Internations\AdminBundle\Service\UserService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,11 +21,17 @@ class UserController extends AbstractController
 {
     private UserRepository $userRepository;
     private EntityManagerInterface $entityManager;
+    private UserService $userService;
 
-    public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        UserRepository $userRepository,
+        UserService $userService,
+    )
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
+        $this->userService = $userService;
     }
 
     #[Route('/internations/users', name: 'internations_users')]
@@ -51,9 +58,7 @@ class UserController extends AbstractController
 
             try {
 
-                $hashedPassword = $passwordHasher->hashPassword($newUser, $form->get('password')->getData());
-                $newUser->setPassword($hashedPassword);
-                $this->userRepository->create($newUser);
+                $this->userRepository->create($this->userService->hashUserPassword($newUser));
 
             } catch (\Exception $e) {
 
@@ -75,14 +80,16 @@ class UserController extends AbstractController
 
     #[Route('/internations/users/edit/{id}', name: 'internations_users_edit')]
     #[IsGranted('ROLE_ADMIN')]
-    public function edit($id, Request $request): Response
+    public function edit($id, Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->userRepository->find($id);
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->userRepository->save($form->getData(), true);
+            $newUser = $form->getData();
+
+            $this->userRepository->save($this->userService->hashUserPassword($newUser), true);
             $this->addFlash('success', 'Success! User was saved.');
 
             return $this->redirectToRoute('internations_users');
