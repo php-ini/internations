@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Internations\AdminBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Internations\AdminBundle\Entity\User;
-use Internations\AdminBundle\Form\UserFormType;
-use Internations\AdminBundle\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Internations\AdminBundle\Form\UserFormType;
+use Internations\AdminBundle\Repository\UserRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserController extends AbstractController
 {

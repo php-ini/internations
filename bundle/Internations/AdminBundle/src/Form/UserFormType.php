@@ -6,6 +6,7 @@ namespace Internations\AdminBundle\Form;
 
 use Internations\AdminBundle\Entity\Groups;
 use Internations\AdminBundle\Entity\User;
+use Internations\AdminBundle\Enum\Roles;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,8 +19,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class UserFormType extends AbstractType
 {
-    const ROLES_LIST = ['User' => 'user', 'Admin' => 'admin'];
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -60,7 +59,7 @@ class UserFormType extends AbstractType
                 'attr' => array(
                     'class' => 'form-control',
                 ),
-                'choices' => self::ROLES_LIST,
+                'choices' => Roles::ROLES_LIST,
                 'label' => 'Select the user roles',
                 'multiple' => true,
                 'row_attr' => [

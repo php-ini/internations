@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Internations\AdminBundle\Entity;
 
-use Internations\AdminBundle\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraint as Assert;
-use Internations\AdminBundle\Validator\Constraints as CustomAssert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraint as Assert;
+use Internations\AdminBundle\Repository\UserRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Internations\AdminBundle\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email')]
-class User
+final class User
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -51,8 +51,6 @@ class User
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $deleted_at = null;
-
-
 
     #[ORM\JoinTable(name: 'user_group')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
@@ -180,6 +178,11 @@ class User
         $this->deleted_at = $deleted_at;
 
         return $this;
+    }
+
+    public function isAdmin()
+    {
+        return in_array('admin', $this->roles);
     }
 
     public function __toString(): string

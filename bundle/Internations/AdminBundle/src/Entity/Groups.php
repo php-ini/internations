@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Internations\AdminBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraint as Assert;
 use Internations\AdminBundle\Repository\GroupsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Internations\AdminBundle\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: GroupsRepository::class)]
-class Groups
+final class Groups
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
