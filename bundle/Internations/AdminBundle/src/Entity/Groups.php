@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Internations\AdminBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraint as Assert;
 use Internations\AdminBundle\Repository\GroupsRepository;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Internations\AdminBundle\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: GroupsRepository::class)]
@@ -28,6 +29,12 @@ class Groups
     #[ORM\Column]
     private ?int $lkp_users_count = null;
 
+    #[ORM\JoinTable(name: 'user_group')]
+    #[ORM\JoinColumn(name: 'group_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: User::class)]
+    private $users;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
@@ -36,6 +43,10 @@ class Groups
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $deleted_at = null;
+
+    public function __construct() {
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -78,6 +89,23 @@ class Groups
         return $this;
     }
 
+    public function addUser(User $user): self
+    {
+        $this->users[] = $user;
+
+        return $this;
+    }
+
+    public function removeUser(User $user): bool
+    {
+        return $this->users->removeElement($user);
+    }
+
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
@@ -112,5 +140,10 @@ class Groups
         $this->deleted_at = $deleted_at;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

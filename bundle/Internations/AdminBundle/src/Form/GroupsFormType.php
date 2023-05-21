@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Internations\AdminBundle\Form;
 
 use Internations\AdminBundle\Entity\Groups;
+use Internations\AdminBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -40,6 +42,11 @@ class GroupsFormType extends AbstractType
                 ],
 
             ])
+            ->add('users', EntityType::class, array(
+                'class'     => User::class,
+                'expanded'  => true,
+                'multiple'  => true,
+            ))
             ->add('save', SubmitType::class, ['label' => 'Save Group'])
         ;
     }

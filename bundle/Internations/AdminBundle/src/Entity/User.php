@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraint as Assert;
 use Internations\AdminBundle\Validator\Constraints as CustomAssert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email')]
@@ -49,6 +51,18 @@ class User
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $deleted_at = null;
+
+
+
+    #[ORM\JoinTable(name: 'user_group')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'group_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: Groups::class)]
+    private $groups;
+
+    public function __construct() {
+        $this->groups = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -115,6 +129,23 @@ class User
         return $this;
     }
 
+    public function addGroup(Groups $group): self
+    {
+        $this->groups[] = $group;
+
+        return $this;
+    }
+
+    public function removeGroup(Groups $group): bool
+    {
+        return $this->groups->removeElement($group);
+    }
+
+    public function getGroups(): ?Collection
+    {
+        return $this->groups;
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
@@ -149,5 +180,10 @@ class User
         $this->deleted_at = $deleted_at;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

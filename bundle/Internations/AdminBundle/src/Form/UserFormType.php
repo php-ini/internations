@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Internations\AdminBundle\Form;
 
+use Internations\AdminBundle\Entity\Groups;
 use Internations\AdminBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -13,6 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class UserFormType extends AbstractType
 {
@@ -67,6 +69,11 @@ class UserFormType extends AbstractType
                 'required' => true,
                 'placeholder' => 'Select'
             ])
+            ->add('groups', EntityType::class, array(
+                'class'     => Groups::class,
+                'expanded'  => true,
+                'multiple'  => true,
+            ))
             ->add('is_active', CheckboxType::class, [
                 'label'    => 'Active user?',
                 'required' => false,
