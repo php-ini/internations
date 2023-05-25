@@ -26,3 +26,17 @@ services:
     Internations\AdminBundle\Validator\Constraints\DuplicateEmailValidator: ~
 
     Internations\AdminBundle\Service\UserService: ~
+
+    #----------
+    # API V1
+    #----------
+    Internations\AdminBundle\Controller\UserApiController: ~
+
+    Internations\AdminBundle\Controller\GroupsApiController: ~
+
+    Internations\AdminBundle\Dto\Response\Transformer\UserResponseDtoTransformer:
+        lazy: true
+
+    Internations\AdminBundle\Dto\Response\Transformer\GroupsResponseDtoTransformer:
+        lazy: true
+

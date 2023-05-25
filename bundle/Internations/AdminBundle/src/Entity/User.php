@@ -57,7 +57,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinTable(name: 'user_group')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'group_id', referencedColumnName: 'id')]
-    #[ORM\ManyToMany(targetEntity: Groups::class)]
+    #[ORM\ManyToMany(targetEntity: Groups::class, fetch: 'EXTRA_LAZY')]
     private $groups;
 
     public function __construct()
