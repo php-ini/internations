@@ -1,7 +1,7 @@
 {% extends "@InternationsAdmin/layout/base.html.twig" %}
 
 {% block breadcrumb %}
-    {% include '@InternationsAdmin/partials/breadcrumb.html.twig' with {page: 'Groups'} %}
+    {% include '@InternationsAdmin/partials/breadcrumb.html.twig' with {page: 'Users'} %}
 {% endblock %}
 
 {% block body %}
@@ -10,7 +10,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <h6>Group create</h6>
+                        <h6>Role create</h6>
                     </div>
 
                     {% if error is defined %}
