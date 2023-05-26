@@ -26,12 +26,14 @@
                 <div class="card mb-4">
                     <div class="card-header pb-0">
                         <h6>Groups table
-                            <a href="{{ path('internations_groups_create') }}" class="btn btn-primary btn-md btn-icon active"
-                               style="float: right;" role="button" aria-pressed="true">
-                                <span class="btn-inner--icon">
-                                    <i class="fa fa-plus"></i>
-                                </span>  New Group
-                            </a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('internations_groups_create') }}" class="btn btn-primary btn-md btn-icon active"
+                                   style="float: right;" role="button" aria-pressed="true">
+                                    <span class="btn-inner--icon">
+                                        <i class="fa fa-plus"></i>
+                                    </span>  New Group
+                                </a>
+                            {% endif %}
                         </h6>
 
                     </div>
@@ -76,16 +78,18 @@
                                                 <span class="text-secondary text-xs font-weight-bold">{{ group.createdAt|date('Y-m-d') }}</span>
                                             </td>
                                             <td class="align-middle">
-                                                <a href="{{ path('internations_groups_edit', {'id': group.id}) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                                                    Edit
-                                                </a>
+                                                {% if is_granted('ROLE_ADMIN') %}
+                                                    <a href="{{ path('internations_groups_edit', {'id': group.id}) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                                                        Edit
+                                                    </a>
 
-                                                <!-- Button trigger modal -->
-                                                <a href="javascript: void(0);" class="text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#delete-modal-{{ group.id }}">
-                                                    Delete
-                                                </a>
+                                                    <!-- Button trigger modal -->
+                                                    <a href="javascript: void(0);" class="text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#delete-modal-{{ group.id }}">
+                                                        Delete
+                                                    </a>
 
-                                                {% include '@InternationsAdmin/partials/confirm-modal.html.twig' with {id: group.id, url: path('internations_groups_delete', {id: group.id})} %}
+                                                    {% include '@InternationsAdmin/partials/confirm-modal.html.twig' with {id: group.id, url: path('internations_groups_delete', {id: group.id})} %}
+                                                {% endif %}
                                             </td>
                                         </tr>
                                     {% endfor %}

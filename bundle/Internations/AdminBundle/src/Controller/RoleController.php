@@ -19,13 +19,8 @@ class RoleController extends AbstractController
 {
     const SUB_DOMAIN_NAME = 'role';
 
-    private RoleRepository $roleRepository;
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager, RoleRepository $roleRepository)
+    public function __construct(private EntityManagerInterface $entityManager, private RoleRepository $roleRepository)
     {
-        $this->roleRepository = $roleRepository;
-        $this->entityManager = $entityManager;
     }
 
     #[Route('/internations/' . self::SUB_DOMAIN_NAME, name: 'internations_' . self::SUB_DOMAIN_NAME)]

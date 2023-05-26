@@ -6,8 +6,8 @@ namespace Internations\AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 use Internations\AdminBundle\Entity\Groups;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraint as Assert;
 use Internations\AdminBundle\Repository\RoleRepository;
 use Internations\AdminBundle\Validator\Constraints as CustomAssert;

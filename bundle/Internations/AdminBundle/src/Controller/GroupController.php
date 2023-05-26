@@ -19,13 +19,8 @@ class GroupController extends AbstractController
 {
     const SUB_DOMAIN_NAME = 'groups';
 
-    private GroupsRepository $groupsRepository;
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager, GroupsRepository $groupsRepository)
+    public function __construct(private EntityManagerInterface $entityManager, private GroupsRepository $groupsRepository)
     {
-        $this->groupsRepository = $groupsRepository;
-        $this->entityManager = $entityManager;
     }
 
     #[Route('/internations/' . self::SUB_DOMAIN_NAME, name: 'internations_' . self::SUB_DOMAIN_NAME)]

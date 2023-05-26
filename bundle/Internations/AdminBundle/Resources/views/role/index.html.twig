@@ -26,12 +26,14 @@
                 <div class="card mb-4">
                     <div class="card-header pb-0">
                         <h6>Roles table
-                            <a href="{{ path('internations_role_create') }}" class="btn btn-primary btn-md btn-icon active"
-                               style="float: right;" role="button" aria-pressed="true">
-                                <span class="btn-inner--icon">
-                                    <i class="fa fa-plus"></i>
-                                </span>  New Role
-                            </a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('internations_role_create') }}" class="btn btn-primary btn-md btn-icon active"
+                                   style="float: right;" role="button" aria-pressed="true">
+                                    <span class="btn-inner--icon">
+                                        <i class="fa fa-plus"></i>
+                                    </span>  New Role
+                                </a>
+                            {% endif %}
                         </h6>
 
                     </div>
@@ -72,16 +74,18 @@
                                                 <span class="badge badge-sm bg-gradient-success">Online </span>
                                             </td>
                                             <td class="align-middle">
-                                                <a href="{{ path('internations_role_edit', {'id': role.id}) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                                                    Edit
-                                                </a>
+                                                {% if is_granted('ROLE_ADMIN') %}
+                                                    <a href="{{ path('internations_role_edit', {'id': role.id}) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                                                        Edit
+                                                    </a>
 
-                                                <!-- Button trigger modal -->
-                                                <a href="javascript: void(0);" class="text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#delete-modal-{{ role.id }}">
-                                                    Delete
-                                                </a>
+                                                    <!-- Button trigger modal -->
+                                                    <a href="javascript: void(0);" class="text-secondary font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#delete-modal-{{ role.id }}">
+                                                        Delete
+                                                    </a>
 
-                                                {% include '@InternationsAdmin/partials/confirm-modal.html.twig' with {id: role.id, url: path('internations_role_delete', {id: role.id})} %}
+                                                    {% include '@InternationsAdmin/partials/confirm-modal.html.twig' with {id: role.id, url: path('internations_role_delete', {id: role.id})} %}
+                                                {% endif %}
                                             </td>
                                         </tr>
                                     {% endfor %}

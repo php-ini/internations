@@ -7,6 +7,7 @@ namespace Internations\AdminBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Internations\AdminBundle\Enum\Roles;
 use Symfony\Component\Validator\Constraint as Assert;
 use Internations\AdminBundle\Repository\GroupsRepository;
 use Internations\AdminBundle\Validator\Constraints as CustomAssert;
@@ -22,6 +23,12 @@ final class Groups
     #[ORM\Column(length: 50, nullable: false)]
     #[CustomAssert\CheckName]
     private ?string $name = null;
+
+    #[ORM\JoinTable(name: 'role_user')]
+    #[ORM\JoinColumn(name: 'group_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: Role::class)]
+    private $roles;
 
     #[ORM\Column]
     private ?bool $is_active = null;
@@ -87,6 +94,36 @@ final class Groups
         $this->is_active = $is_active;
 
         return $this;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function addRole(Role $role): self
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    public function removeRole(Role $role): bool
+    {
+        return $this->roles->removeElement($role);
+    }
+
+    public function getRoles(): array
+    {
+        $roles = [];
+
+        foreach($this->roles->toArray() as $role) {
+            $roles[] = $role->getName();
+        }
+
+        return $roles ?? [ROLES::USER_ROLE];
     }
 
     public function addUser(User $user): self

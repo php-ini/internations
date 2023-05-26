@@ -26,12 +26,14 @@
                 <div class="card mb-4">
                     <div class="card-header pb-0">
                         <h6>Users table
-                            <a href="{{ path('internations_users_create') }}" class="btn btn-primary btn-md btn-icon active"
-                               style="float: right;" role="button" aria-pressed="true">
-                                <span class="btn-inner--icon">
-                                    <i class="fa fa-plus"></i>
-                                </span>  New User
-                            </a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('internations_users_create') }}" class="btn btn-primary btn-md btn-icon active"
+                                   style="float: right;" role="button" aria-pressed="true">
+                                    <span class="btn-inner--icon">
+                                        <i class="fa fa-plus"></i>
+                                    </span>  New User
+                                </a>
+                            {% endif %}
                         </h6>
 
                     </div>
@@ -78,6 +80,7 @@
                                                 <span class="text-secondary text-xs font-weight-bold">{{ user.createdAt|date('Y-m-d') }}</span>
                                             </td>
                                             <td class="align-middle">
+                                                {% if is_granted('ROLE_ADMIN') %}
                                                 <a href="{{ path('internations_users_edit', {'id': user.id}) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                                                     Edit
                                                 </a>
@@ -88,6 +91,7 @@
                                                 </a>
 
                                                 {% include '@InternationsAdmin/partials/confirm-modal.html.twig' with {id: user.id, url: path('internations_users_delete', {id: user.id})} %}
+                                                {% endif %}
                                             </td>
                                         </tr>
                                     {% endfor %}

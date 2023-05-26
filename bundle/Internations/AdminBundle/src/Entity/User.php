@@ -39,8 +39,11 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 30)]
     private ?string $password = null;
 
-    #[ORM\Column(type: Types::JSON)]
-    private array $roles = [];
+    #[ORM\JoinTable(name: 'role_user')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: Role::class)]
+    private $roles;
 
     #[ORM\Column]
     private ?bool $is_active = null;
@@ -106,11 +109,6 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRoles(): array
-    {
-        return $this->roles;
-    }
-
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -118,7 +116,30 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isIsActive(): ?bool
+    public function addRole(Role $role): self
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    public function removeRole(Role $role): bool
+    {
+        return $this->roles->removeElement($role);
+    }
+
+    public function getRoles(): array
+    {
+        $roles = [];
+
+        foreach($this->roles->toArray() as $role) {
+            $roles[] = $role->getName();
+        }
+
+        return $roles ?? [ROLES::USER_ROLE];
+    }
+
+    public function isActive(): ?bool
     {
         return $this->is_active;
     }

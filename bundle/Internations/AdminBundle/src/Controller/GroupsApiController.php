@@ -13,16 +13,11 @@ class GroupsApiController extends AbstractApiController
 {
     const VERSION = 1;
 
-    private GroupsRepository $groupsRepository;
-    private GroupsResponseDtoTransformer $groupsResponseDtoTransformer;
-
     public function __construct(
-        GroupsRepository $groupsRepository,
-        GroupsResponseDtoTransformer $groupsResponseDtoTransformer,
+        private GroupsRepository $groupsRepository,
+        private GroupsResponseDtoTransformer $groupsResponseDtoTransformer,
     )
     {
-        $this->groupsRepository = $groupsRepository;
-        $this->groupsResponseDtoTransformer = $groupsResponseDtoTransformer;
     }
 
     #[Route('/api/v1/groups', methods: ['GET'], name: 'internations_api_get_groups')]

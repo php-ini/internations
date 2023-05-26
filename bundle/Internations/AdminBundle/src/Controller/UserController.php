@@ -19,19 +19,13 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
-    private UserRepository $userRepository;
-    private EntityManagerInterface $entityManager;
-    private UserService $userService;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        UserRepository $userRepository,
-        UserService $userService,
+        private EntityManagerInterface $entityManager,
+        private UserRepository $userRepository,
+        private UserService $userService,
     )
     {
-        $this->userRepository = $userRepository;
-        $this->entityManager = $entityManager;
-        $this->userService = $userService;
     }
 
     #[Route('/internations/users', name: 'internations_users')]

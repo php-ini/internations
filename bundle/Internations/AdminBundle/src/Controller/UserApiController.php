@@ -13,16 +13,11 @@ class UserApiController extends AbstractApiController
 {
     const VERSION = 1;
 
-    private UserRepository $userRepository;
-    private UserResponseDtoTransformer $userResponseDtoTransformer;
-
     public function __construct(
-        UserRepository $userRepository,
-        UserResponseDtoTransformer $userResponseDtoTransformer,
+        private UserRepository $userRepository,
+        private UserResponseDtoTransformer $userResponseDtoTransformer,
     )
     {
-        $this->userRepository = $userRepository;
-        $this->userResponseDtoTransformer = $userResponseDtoTransformer;
     }
 
     #[Route('/api/v1/users', methods: ['GET'], name: 'internations_api_get_users')]
