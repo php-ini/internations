@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Internations\AdminBundle\Controller;
+namespace Internations\AdminBundle\Controller\Api;
 
 use Internations\AdminBundle\Dto\Response\Transformer\GroupsResponseDtoTransformer;
 use Internations\AdminBundle\Repository\GroupsRepository;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Internations\AdminBundle\Controller;
+namespace Internations\AdminBundle\Controller\Api;
 
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Response;

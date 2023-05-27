@@ -25,8 +25,6 @@ class GroupsRepository extends ServiceEntityRepository
 
     public function create(Groups $entity, bool $flush = true): void
     {
-        $entity->setCreatedAt(new \DateTimeImmutable('now'));
-        $entity->setLkpUsersCount(0);
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {

@@ -24,7 +24,7 @@ class RoleResponseDtoTransformer extends AbstractResponseDtoTransformer
     public function transformFromObject($role, $isNested = false): RoleResponseDto
     {
         $dto = new RoleResponseDto($role);
-        $dto->name = $role->getName();
+        $dto->name = (string)$role;
 
         if ($isNested) {
             $dto->users = $this->userResponseDtoTransformer->transformFromObjects($role->getUsers());

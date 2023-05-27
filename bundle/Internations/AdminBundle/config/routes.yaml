@@ -2,3 +2,6 @@ internations_admin_bundle.routes:
     resource: ../src/Controller/
     type: annotation
 
+internations_admin_api_bundle.routes:
+    resource: ../src/Controller/Api
+    type: annotation

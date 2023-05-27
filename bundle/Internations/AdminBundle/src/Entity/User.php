@@ -18,6 +18,7 @@ use Internations\AdminBundle\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email')]
+#[ORM\HasLifecycleCallbacks]
 final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -248,6 +249,12 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->setIsActive(isset($data['is_active']) ? (bool)$data['is_active'] : false);
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->created_at = new \DateTimeImmutable();
     }
 
     public function __toString(): string

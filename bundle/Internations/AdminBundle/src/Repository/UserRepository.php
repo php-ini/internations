@@ -25,7 +25,6 @@ class UserRepository extends ServiceEntityRepository
 
     public function create(User $entity, bool $flush = true): void
     {
-        $entity->setCreatedAt(new \DateTimeImmutable('now'));
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {

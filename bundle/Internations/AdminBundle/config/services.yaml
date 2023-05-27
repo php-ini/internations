@@ -38,9 +38,9 @@ services:
     #----------
     # API V1
     #----------
-    Internations\AdminBundle\Controller\UserApiController: ~
+    Internations\AdminBundle\Controller\Api\UserApiController: ~
 
-    Internations\AdminBundle\Controller\GroupsApiController: ~
+    Internations\AdminBundle\Controller\Api\GroupsApiController: ~
 
     Internations\AdminBundle\Dto\Response\Transformer\UserResponseDtoTransformer:
         lazy: true

@@ -13,6 +13,7 @@ use Internations\AdminBundle\Repository\GroupsRepository;
 use Internations\AdminBundle\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: GroupsRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 final class Groups
 {
     #[ORM\Id]
@@ -117,7 +118,7 @@ final class Groups
 
     public function getRoles(): ?array
     {
-        return $this->roles->toArray();
+        return $this->roles ? $this->roles->toArray() : [];
     }
 
     public function getRolesObjectForCreate($isEdit = false): ?array
@@ -176,6 +177,18 @@ final class Groups
         $this->deleted_at = $deleted_at;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->created_at = new \DateTimeImmutable();
+    }
+
+    #[ORM\PrePersist]
+    public function setUsersCountValue(): void
+    {
+        $this->lkp_users_count = 0;
     }
 
     public function __toString()

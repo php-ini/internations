@@ -1,2 +1,5 @@
 internations_admin_bundle.routes:
   resource: '@InternationsAdminBundle/config/routes.yaml'
+
+internations_admin_api_bundle.routes:
+  resource: '@InternationsAdminBundle/config/routes.yaml'
