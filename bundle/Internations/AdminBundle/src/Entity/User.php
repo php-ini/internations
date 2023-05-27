@@ -39,12 +39,6 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 30)]
     private ?string $password = null;
 
-    #[ORM\JoinTable(name: 'role_user')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
-    #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id')]
-    #[ORM\ManyToMany(targetEntity: Role::class)]
-    private $roles;
-
     #[ORM\Column]
     private ?bool $is_active = null;
 
@@ -57,14 +51,21 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $deleted_at = null;
 
+    #[ORM\JoinTable(name: 'role_user')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: Role::class)]
+    private $roles;
+
     #[ORM\JoinTable(name: 'user_group')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'group_id', referencedColumnName: 'id')]
-    #[ORM\ManyToMany(targetEntity: Groups::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToMany(targetEntity: Groups::class)]
     private $groups;
 
     public function __construct()
     {
+        $this->roles = new ArrayCollection();
         $this->groups = new ArrayCollection();
     }
 
@@ -118,14 +119,18 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function addRole(Role $role): self
     {
-        $this->roles[] = $role;
+        if (!$this->roles->contains($role)) {
+            $this->roles[] = $role;
+        }
 
         return $this;
     }
 
-    public function removeRole(Role $role): bool
+    public function removeRole(Role $role): self
     {
-        return $this->roles->removeElement($role);
+        $this->roles->removeElement($role);
+
+        return $this;
     }
 
     public function getRoles(): array
@@ -136,7 +141,17 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
             $roles[] = $role->getName();
         }
 
-        return $roles ?? [ROLES::USER_ROLE];
+        return $roles;
+    }
+
+    public function getRolesObjects(): array
+    {
+        return $this->roles->toArray();
+    }
+
+    public function getFormRoles(): array
+    {
+        return $this->roles->toArray();
     }
 
     public function isActive(): ?bool
@@ -147,6 +162,13 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsActive(bool $is_active): self
     {
         $this->is_active = $is_active;
+
+        return $this;
+    }
+
+    public function setGroups(array $groups): self
+    {
+        $this->groups = $groups;
 
         return $this;
     }
@@ -206,7 +228,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isAdmin()
     {
-//        return in_array(Roles::ADMIN_ROLE, $this->roles);
+        return in_array(Roles::ADMIN_ROLE, $this->roles);
     }
 
     public function eraseCredentials()
@@ -216,6 +238,16 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string)$this->email;
+    }
+
+    public function transformFromArray(array $data): self
+    {
+        $this->setName($data['name']);
+        $this->setPassword($data['password']);
+        $this->setEmail($data['email']);
+        $this->setIsActive(isset($data['is_active']) ? (bool)$data['is_active'] : false);
+
+        return $this;
     }
 
     public function __toString(): string

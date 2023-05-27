@@ -41,7 +41,7 @@ class UserController extends AbstractController
 
     #[Route('/internations/users/create', name: 'internations_users_create')]
     #[IsGranted('ROLE_ADMIN')]
-    public function create(Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    public function create(Request $request): Response
     {
         $user = new User();
         $form = $this->createForm(UserFormType::class, $user);
@@ -74,16 +74,14 @@ class UserController extends AbstractController
 
     #[Route('/internations/users/edit/{id}', name: 'internations_users_edit')]
     #[IsGranted('ROLE_ADMIN')]
-    public function edit($id, Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    public function edit($id, Request $request): Response
     {
         $user = $this->userRepository->find($id);
         $form = $this->createForm(UserFormType::class, $user);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $newUser = $form->getData();
-
-            $this->userRepository->save($this->userService->hashUserPassword($newUser), true);
+        if ($request->isMethod('POST')) {
+            $newUser = $this->userService->transformFromArray((int)$id, $request->get('user_form'));
+            $this->userRepository->save($newUser, true);
             $this->addFlash('success', 'Success! User was saved.');
 
             return $this->redirectToRoute('internations_users');

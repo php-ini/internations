@@ -24,7 +24,7 @@ final class Groups
     #[CustomAssert\CheckName]
     private ?string $name = null;
 
-    #[ORM\JoinTable(name: 'role_user')]
+    #[ORM\JoinTable(name: 'role_group')]
     #[ORM\JoinColumn(name: 'group_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id')]
     #[ORM\ManyToMany(targetEntity: Role::class)]
@@ -115,15 +115,14 @@ final class Groups
         return $this->roles->removeElement($role);
     }
 
-    public function getRoles(): array
+    public function getRoles(): ?array
     {
-        $roles = [];
+        return $this->roles->toArray();
+    }
 
-        foreach($this->roles->toArray() as $role) {
-            $roles[] = $role->getName();
-        }
-
-        return $roles ?? [ROLES::USER_ROLE];
+    public function getRolesObjectForCreate($isEdit = false): ?array
+    {
+        return $isEdit ? $this->roles : $this->roles->toArray();
     }
 
     public function addUser(User $user): self

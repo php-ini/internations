@@ -8,12 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Internations\AdminBundle\Entity\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Validator\Constraint as Assert;
 use Internations\AdminBundle\Repository\RoleRepository;
 use Internations\AdminBundle\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
-final class Role
+final class Role implements RoleHierarchyInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,13 +22,13 @@ final class Role
     private ?int $id = null;
 
     #[ORM\Column(length: 50, nullable: false)]
-    #[CustomAssert\CheckName]
+    #[CustomAssert\CheckRoleName]
     private ?string $name = null;
 
     #[ORM\JoinTable(name: 'role_user')]
     #[ORM\JoinColumn(name: 'role_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'user_id', referencedColumnName: 'id')]
-    #[ORM\ManyToMany(targetEntity: User::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToMany(targetEntity: User::class)]
     private $users;
 
     #[ORM\JoinTable(name: 'role_group')]
@@ -38,6 +39,7 @@ final class Role
 
     public function __construct() {
         $this->users = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -91,7 +93,7 @@ final class Role
         return $this;
     }
 
-    public function removeGroup(Group $group): bool
+    public function removeGroup(Groups $group): bool
     {
         return $this->users->removeElement($group);
     }
@@ -104,5 +106,16 @@ final class Role
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getReachableRoleNames(array $roles): array
+    {
+        $out = [];
+
+        foreach ($roles as $role) {
+            $out[] = $role->getName();
+        }
+
+        return $out;
     }
 }

@@ -21,7 +21,7 @@ class UserResponseDto
     #[MaxDepth(1)]
     public array $groups;
 
-    #[Serialization\Type("array")]
+    #[MaxDepth(1)]
     public array $roles;
 
     #[Serialization\Type("DateTime<'Y-m-d\TH:i:s'>")]

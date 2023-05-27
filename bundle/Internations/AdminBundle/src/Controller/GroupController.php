@@ -7,6 +7,7 @@ namespace Internations\AdminBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Internations\AdminBundle\Entity\Groups;
+use Internations\AdminBundle\Entity\Role;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,8 +30,8 @@ class GroupController extends AbstractController
     {
         $groups = $this->{self::SUB_DOMAIN_NAME . 'Repository'}->findAll();
 
-        return $this->render('@InternationsAdmin/' .  self::SUB_DOMAIN_NAME . '/index.html.twig', [
-             self::SUB_DOMAIN_NAME => $groups
+        return $this->render('@InternationsAdmin/' . self::SUB_DOMAIN_NAME . '/index.html.twig', [
+            self::SUB_DOMAIN_NAME => $groups
         ]);
     }
 
@@ -39,7 +40,8 @@ class GroupController extends AbstractController
     public function create(Request $request): Response
     {
         $groups = new Groups();
-        $form = $this->createForm(GroupsFormType::class, $groups);
+        $roles = $this->entityManager->getRepository(Role::class)->findAll();
+        $form = $this->createForm(GroupsFormType::class, $groups, ['create' => true, 'roles' => $roles]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

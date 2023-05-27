@@ -14,7 +14,6 @@ class AdminController extends AbstractController
     #[Route('/', name: 'internations_home')]
     public function home(): Response
     {
-
         return $this->redirectToRoute('internations_admin');
     }
 

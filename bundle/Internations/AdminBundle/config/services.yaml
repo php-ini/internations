@@ -31,6 +31,10 @@ services:
 
     Internations\AdminBundle\Service\UserService: ~
 
+    Internations\AdminBundle\Form\RolesType: ~
+
+    Internations\AdminBundle\Form\UserFormType: ~
+
     #----------
     # API V1
     #----------
@@ -42,5 +46,8 @@ services:
         lazy: true
 
     Internations\AdminBundle\Dto\Response\Transformer\GroupsResponseDtoTransformer:
+        lazy: true
+
+    Internations\AdminBundle\Dto\Response\Transformer\RoleResponseDtoTransformer:
         lazy: true
 

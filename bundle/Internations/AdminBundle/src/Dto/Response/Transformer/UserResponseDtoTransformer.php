@@ -9,15 +9,12 @@ use Internations\AdminBundle\Entity\User;
 
 class UserResponseDtoTransformer extends AbstractResponseDtoTransformer
 {
-    private GroupsResponseDtoTransformer $groupsResponseDtoTransformer;
-
     /**
      * UserResponseDtoTransformer constructor.
      * @param GroupsResponseDtoTransformer $groupsResponseDtoTransformer
      */
-    public function __construct(GroupsResponseDtoTransformer $groupsResponseDtoTransformer)
+    public function __construct(private GroupsResponseDtoTransformer $groupsResponseDtoTransformer, private RoleResponseDtoTransformer $roleResponseDtoTransformer)
     {
-        $this->groupsResponseDtoTransformer = $groupsResponseDtoTransformer;
     }
 
     /**
@@ -30,8 +27,9 @@ class UserResponseDtoTransformer extends AbstractResponseDtoTransformer
         $dto->name = $user->getName();
         $dto->email = $user->getEmail();
         $dto->password = $user->getPassword();
-        $dto->roles = $user->getRoles();
+//        $dto->roles = $user->getRoles();
         if($isNested) {
+            $dto->roles = $this->roleResponseDtoTransformer->transformFromObjects($user->getRoles());
             $dto->groups = $this->groupsResponseDtoTransformer->transformFromObjects($user->getGroups());
         }
 

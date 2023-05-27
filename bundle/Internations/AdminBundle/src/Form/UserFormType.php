@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Internations\AdminBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Internations\AdminBundle\Enum\Roles;
 use Internations\AdminBundle\Entity\User;
 use Internations\AdminBundle\Entity\Groups;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,7 +12,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -56,19 +54,7 @@ class UserFormType extends AbstractType
                 'label' => 'Enter Password',
                 'required' => true
             ])
-            ->add('roles', ChoiceType::class, [
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-                'choices' => Roles::ROLES_LIST,
-                'label' => 'Select the user roles',
-                'multiple' => true,
-                'row_attr' => [
-                    'class' => 'form-group',
-                ],
-                'required' => true,
-                'placeholder' => 'Select'
-            ])
+            ->add('roles', RolesType::class)
             ->add('groups', EntityType::class, array(
                 'class'     => Groups::class,
                 'expanded'  => true,
