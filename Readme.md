@@ -29,6 +29,9 @@ Head to http://internations.3ageeb.com to check how this bundle works in action.
 - Admins can mutate the users module and the other modules.
 - Users can see the listings but has no mutations rights.
 
+## Screenshot
+![Screenshot](./screenshot.png)
+
 ## UML Domain Diagram
 ![Domain UML](./internations-domain-UML.jpg)
 
