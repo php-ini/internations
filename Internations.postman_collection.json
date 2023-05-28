@@ -1,0 +1,137 @@
+{
+	"info": {
+		"_postman_id": "f33c0376-c866-4253-a696-6ee11c77f4ba",
+		"name": "Internations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List all users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "internations.3ageeb.com/api/v1/users",
+					"host": [
+						"internations",
+						"3ageeb",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "internations.3ageeb.com/api/v1/users/3",
+					"host": [
+						"internations",
+						"3ageeb",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"API User\",\n    \"email\": \"apiUser@example.com\",\n    \"password\": \"123456\",\n    \"is_active\": 1\n}"
+				},
+				"url": {
+					"raw": "internations.3ageeb.com/api/v1/users",
+					"host": [
+						"internations",
+						"3ageeb",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit User",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"API User update\",\n    \"email\": \"apiUserUpdate@example.com\",\n    \"password\": \"123456\",\n    \"is_active\": 1\n}"
+				},
+				"url": {
+					"raw": "internations.3ageeb.com/api/v1/users/16",
+					"host": [
+						"internations",
+						"3ageeb",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"16"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "internations.3ageeb.com/api/v1/users/3",
+					"host": [
+						"internations",
+						"3ageeb",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -29,6 +29,16 @@ Head to http://internations.3ageeb.com to check how this bundle works in action.
 - Admins can mutate the users module and the other modules.
 - Users can see the listings but has no mutations rights.
 
+## API calls
+The postman collection is included in the root directory in the file `Internations.postman_collection.json`.
+
+####API Examples:
+- `/api/v1/users` [GET] To get all users.
+- `/api/v1/users/{id}` [GET] To get a specific user.
+- `/api/v1/users` [POST] To create a user.
+- `/api/v1/users` [PUT] To update a user.
+- `/api/v1/users/{id}` [DELETE] To delete a specific user.
+
 ## Screenshot
 ![Screenshot](./screenshot.png)
 
