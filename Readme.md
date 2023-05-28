@@ -92,4 +92,4 @@ MIT
 [df1]: <http://daringfireball.net/projects/markdown/>
 [twig]: <https://twig.symfony.com>
 [jQuery]: <http://jquery.com>
-[Mahmoud Abdelsattar]: <mahmoudabdelsattar.com>
+[Mahmoud Abdelsattar]: <http://mahmoudabdelsattar.com>
