@@ -59,4 +59,20 @@ final class UserService
         $user->setGroups($groups);
         return $user;
     }
+
+    public function updateEntity(User $oldUser, User $newUser): User
+    {
+        if (!$oldUser instanceof User || !$newUser instanceof User) {
+            throw new EntityNotFoundException('No Entity found');
+        }
+
+        $oldUser->setName($newUser->getName());
+        $oldUser->setEmail($newUser->getEmail());
+        $oldUser->setPassword($newUser->getPassword());
+        $oldUser->setIsActive($newUser->isActive());
+
+        // TODO: Implement the groups, roles relationships
+
+        return $oldUser;
+    }
 }

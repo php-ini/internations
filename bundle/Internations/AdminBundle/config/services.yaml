@@ -51,3 +51,5 @@ services:
     Internations\AdminBundle\Dto\Response\Transformer\RoleResponseDtoTransformer:
         lazy: true
 
+    Internations\AdminBundle\Factory\UserFactory: ~
+

@@ -27,8 +27,9 @@ class UserResponseDtoTransformer extends AbstractResponseDtoTransformer
         $dto->name = $user->getName();
         $dto->email = $user->getEmail();
         $dto->password = $user->getPassword();
-//        $dto->roles = $user->getRoles();
-        if($isNested) {
+        $dto->isActive = $user->isActive();
+
+        if ($isNested) {
             $dto->roles = $this->roleResponseDtoTransformer->transformFromObjects($user->getRoles());
             $dto->groups = $this->groupsResponseDtoTransformer->transformFromObjects($user->getGroups());
         }

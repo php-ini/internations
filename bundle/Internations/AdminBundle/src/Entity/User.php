@@ -70,6 +70,13 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->groups = new ArrayCollection();
     }
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -225,11 +232,6 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->deleted_at = $deleted_at;
 
         return $this;
-    }
-
-    public function isAdmin()
-    {
-        return in_array(Roles::ADMIN_ROLE, $this->roles);
     }
 
     public function eraseCredentials()

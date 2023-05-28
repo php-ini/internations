@@ -18,6 +18,9 @@ class UserResponseDto
     #[Serialization\Type("string")]
     public string $password;
 
+    #[Serialization\Type("boolean")]
+    public bool $isActive;
+
     #[MaxDepth(1)]
     public array $groups;
 
