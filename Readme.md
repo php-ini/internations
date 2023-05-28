@@ -44,6 +44,7 @@ The `internations-ERD.mwb` is attached and can be imported.
 
 Used open source projects:
 
+- [PHP] - PHP >= 8.0.2
 - [Symfony] - An awesome PHP Framework.
 - [FOS/Rest Bundle] - A symfony bundle to handle the API calls.
 - [Twig] - Great UI template engine
