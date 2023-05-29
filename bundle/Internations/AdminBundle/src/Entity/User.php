@@ -116,7 +116,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles( $roles): self
     {
         $this->roles = $roles;
 
@@ -142,8 +142,9 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = [];
+        $rolesArray = is_array($this->roles) ? $this->roles : $this->roles->toArray();
 
-        foreach($this->roles->toArray() as $role) {
+        foreach($rolesArray as $role) {
             $roles[] = $role->getName();
         }
 
@@ -151,11 +152,6 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function getRolesObjects(): array
-    {
-        return $this->roles->toArray();
-    }
-
-    public function getFormRoles(): array
     {
         return $this->roles->toArray();
     }
@@ -172,7 +168,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function setGroups(array $groups): self
+    public function setGroups( $groups): self
     {
         $this->groups = $groups;
 

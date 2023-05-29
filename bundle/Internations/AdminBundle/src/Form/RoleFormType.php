@@ -41,7 +41,7 @@ class RoleFormType extends AbstractType
                 'expanded'  => true,
                 'multiple'  => true,
             ))
-            ->add('save', SubmitType::class, ['label' => 'Save Group'])
+            ->add('save', SubmitType::class, ['label' => 'Save Role'])
         ;
     }
 

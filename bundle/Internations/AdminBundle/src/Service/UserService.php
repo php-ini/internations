@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Internations\AdminBundle\Service;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityNotFoundException;
 use Internations\AdminBundle\Entity\User;
 use Internations\AdminBundle\Repository\GroupsRepository;
@@ -39,25 +40,45 @@ final class UserService
     {
         $user = $this->userRepository->find($userId);
         $user = $user->transformFromArray($data);
-        $this->hashUserPassword($user);
+        $user = $this->hashUserPassword($user);
 
-        $roles = [];
         if (!empty($data['roles'])) {
-            foreach ($data['roles'] as $roleId) {
-                $roles[] = $this->roleRepository->find($roleId);
-            }
+            $roles = $this->getRolesByIds($data['roles']);
+            $user->setRoles($roles);
+        } else {
+            $user->setRoles([]);
         }
 
-        $groups = [];
         if (!empty($data['groups'])) {
-            foreach ($data['groups'] as $groupId) {
-                $groups[] = $this->groupsRepository->find($groupId);
-            }
+            $groups = $this->getGroupsByIds($data['groups']);
+            $user->setGroups($groups);
+        } else {
+            $user->setGroups(new ArrayCollection());
         }
 
-        $user->setRoles($roles);
-        $user->setGroups($groups);
         return $user;
+    }
+
+    public function getRolesByIds(array $roleIds): ArrayCollection
+    {
+        $rolesArray = new ArrayCollection();
+        if (!empty($roleIds)) {
+            foreach ($roleIds as $roleId) {
+                $rolesArray[] = $this->roleRepository->find($roleId);
+            }
+        }
+        return $rolesArray;
+    }
+
+    public function getGroupsByIds(array $groupsIds): ArrayCollection
+    {
+        $groupsArray = new ArrayCollection();
+        if (!empty($groupsIds)) {
+            foreach ($groupsIds as $groupsId) {
+                $groupsArray[] = $this->groupsRepository->find($groupsId);
+            }
+        }
+        return $groupsArray;
     }
 
     public function updateEntity(User $oldUser, User $newUser): User
@@ -71,7 +92,9 @@ final class UserService
         $oldUser->setPassword($newUser->getPassword());
         $oldUser->setIsActive($newUser->isActive());
 
-        // TODO: Implement the groups, roles relationships
+        $roles = $this->roleRepository->findBy(['name' => $newUser->getRoles()]);
+        $oldUser->setRoles($roles);
+        $oldUser->setGroups($newUser->getGroups());
 
         return $oldUser;
     }

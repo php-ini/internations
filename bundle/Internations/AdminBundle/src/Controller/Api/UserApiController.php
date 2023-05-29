@@ -69,7 +69,13 @@ class UserApiController extends AbstractApiController
             }
 
             $userEntity = $this->userService
-                ->hashUserPassword($this->userFactory->create($data));
+                ->hashUserPassword(
+                    $this->userFactory->create(
+                        $data,
+                        $this->userService->getRolesByIds($data['roles']),
+                        $this->userService->getGroupsByIds($data['groups'])
+                    )
+                );
 
             $errors = $validator->validate($userEntity, null, ['new']);
 
@@ -118,7 +124,13 @@ class UserApiController extends AbstractApiController
             }
 
             $userEntity = $this->userService
-                ->hashUserPassword($this->userFactory->create($data));
+                ->hashUserPassword(
+                    $this->userFactory->create(
+                        $data,
+                        $this->userService->getRolesByIds($data['roles']),
+                        $this->userService->getGroupsByIds($data['groups'])
+                    )
+                );
             $errors = $validator->validate($userEntity);
 
             if (count($errors) === 0) {
@@ -126,7 +138,6 @@ class UserApiController extends AbstractApiController
                 $newUser = $this->userService->updateEntity($user, $userEntity);
 
                 $this->userRepository->save($newUser, true);
-
                 $data = [
                     'status' => self::STATUS_SUCCESS,
                     'success' => "User updated successfully",

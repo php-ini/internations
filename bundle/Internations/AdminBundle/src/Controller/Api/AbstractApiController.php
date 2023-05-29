@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Internations\AdminBundle\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 
