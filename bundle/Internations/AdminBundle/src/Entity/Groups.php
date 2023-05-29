@@ -34,9 +34,6 @@ final class Groups
     #[ORM\Column]
     private ?bool $is_active = null;
 
-    #[ORM\Column]
-    private ?int $lkp_users_count = null;
-
     #[ORM\JoinTable(name: 'user_group')]
     #[ORM\JoinColumn(name: 'group_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'user_id', referencedColumnName: 'id')]
@@ -73,16 +70,9 @@ final class Groups
         return $this;
     }
 
-    public function getLkpUsersCount(): ?int
+    public function getUsersCount(): ?int
     {
         return count($this->users);
-    }
-
-    public function setLkpUsersCount(?int $lkp_users_count): self
-    {
-        $this->lkp_users_count = $lkp_users_count;
-
-        return $this;
     }
 
     public function isIsActive(): ?bool
@@ -183,12 +173,6 @@ final class Groups
     public function setCreatedAtValue(): void
     {
         $this->created_at = new \DateTimeImmutable();
-    }
-
-    #[ORM\PrePersist]
-    public function setUsersCountValue(): void
-    {
-        $this->lkp_users_count = 0;
     }
 
     public function __toString()

@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace Internations\AdminBundle\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Internations\AdminBundle\Enum\Roles;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraint as Assert;
+use Symfony\Component\Validator\Constraints as Assert;
 use Internations\AdminBundle\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Internations\AdminBundle\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity('email')]
+#[UniqueEntity('email', groups: ['new'])]
 #[ORM\HasLifecycleCallbacks]
 final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -28,20 +26,20 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 50, nullable: false)]
     #[CustomAssert\CheckName]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column(name: 'email', type: 'string', length: 60, unique: true)]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
     )]
     #[Assert\NotBlank]
-    private ?string $email = null;
+    private string $email;
 
     #[ORM\Column(length: 30)]
     private ?string $password = null;
 
     #[ORM\Column]
-    private ?bool $is_active = null;
+    private bool $is_active;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;

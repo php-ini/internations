@@ -7,6 +7,7 @@ namespace Internations\AdminBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Internations\AdminBundle\Entity\User;
+use Internations\AdminBundle\Enum\Roles;
 use Internations\AdminBundle\Service\UserService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,11 +16,9 @@ use Internations\AdminBundle\Form\UserFormType;
 use Internations\AdminBundle\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
-
     public function __construct(
         private EntityManagerInterface $entityManager,
         private UserRepository $userRepository,
@@ -29,7 +28,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/internations/users', name: 'internations_users')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted(Roles::USER_ROLE)]
     public function index(): Response
     {
         $users = $this->userRepository->findAll();
@@ -40,7 +39,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/internations/users/create', name: 'internations_users_create')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted(Roles::ADMIN_ROLE)]
     public function create(Request $request): Response
     {
         $user = new User();
@@ -73,7 +72,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/internations/users/edit/{id}', name: 'internations_users_edit')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted(Roles::ADMIN_ROLE)]
     public function edit($id, Request $request): Response
     {
         $user = $this->userRepository->find($id);
@@ -94,7 +93,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/internations/users/delete/{id}', methods: ['GET', 'DELETE'], name: 'internations_users_delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted(Roles::ADMIN_ROLE)]
     public function delete($id): Response
     {
         $user = $this->userRepository->find($id);

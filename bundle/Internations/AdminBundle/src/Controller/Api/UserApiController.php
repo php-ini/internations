@@ -12,6 +12,7 @@ use Internations\AdminBundle\Factory\UserFactory;
 use Internations\AdminBundle\Service\UserService;
 use Internations\AdminBundle\Repository\UserRepository;
 use Internations\AdminBundle\Dto\Response\Transformer\UserResponseDtoTransformer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserApiController extends AbstractApiController
 {
@@ -58,10 +59,10 @@ class UserApiController extends AbstractApiController
     }
 
     #[Route('/api/v' . self::VERSION . '/users', methods: ['POST'], name: 'internations_api_create_users')]
-    public function create(Request $request): Response
+    public function create(Request $request, ValidatorInterface $validator): Response
     {
         try {
-            $data = $this->transformJsonBody($request);
+            $data = $request->toArray();
 
             if (!$request || !array_key_exists('email', $data)) {
                 throw new \Exception();
@@ -70,7 +71,9 @@ class UserApiController extends AbstractApiController
             $userEntity = $this->userService
                 ->hashUserPassword($this->userFactory->create($data));
 
-            if ($userEntity instanceof User) {
+            $errors = $validator->validate($userEntity, null, ['new']);
+
+            if (count($errors) === 0) {
 
                 $this->userRepository->create($userEntity, true);
 
@@ -81,7 +84,7 @@ class UserApiController extends AbstractApiController
                 return $this->respond($data);
             }
 
-            return $this->respond(['error' => 'Data not saved', Response::HTTP_INTERNAL_SERVER_ERROR]);
+            return $this->respond(['error' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
 
         } catch (\Exception $e) {
             $data = [
@@ -94,7 +97,7 @@ class UserApiController extends AbstractApiController
     }
 
     #[Route('/api/v' . self::VERSION . '/users/{id}', methods: ['PUT'], name: 'internations_api_update_users')]
-    public function update(Request $request, int $id): Response
+    public function update(Request $request, ValidatorInterface $validator, int $id): Response
     {
         $user = $this->userRepository->find($id);
 
@@ -108,7 +111,7 @@ class UserApiController extends AbstractApiController
         }
 
         try {
-            $data = $this->transformJsonBody($request);
+            $data = $request->toArray();
 
             if (!$request || !array_key_exists('email', $data)) {
                 throw new \Exception();
@@ -116,10 +119,12 @@ class UserApiController extends AbstractApiController
 
             $userEntity = $this->userService
                 ->hashUserPassword($this->userFactory->create($data));
+            $errors = $validator->validate($userEntity);
 
-            if ($userEntity instanceof User) {
+            if (count($errors) === 0) {
 
                 $newUser = $this->userService->updateEntity($user, $userEntity);
+
                 $this->userRepository->save($newUser, true);
 
                 $data = [
@@ -130,7 +135,7 @@ class UserApiController extends AbstractApiController
                 return $this->respond($data);
             }
 
-            return $this->respond(['error' => 'Data not saved', Response::HTTP_INTERNAL_SERVER_ERROR]);
+            return $this->respond(['error' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
 
         } catch (\Exception $e) {
             $data = [

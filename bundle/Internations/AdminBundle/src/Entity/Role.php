@@ -8,12 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Internations\AdminBundle\Entity\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Validator\Constraint as Assert;
 use Internations\AdminBundle\Repository\RoleRepository;
 use Internations\AdminBundle\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
+#[UniqueEntity('name')]
 final class Role implements RoleHierarchyInterface
 {
     #[ORM\Id]
@@ -21,7 +23,7 @@ final class Role implements RoleHierarchyInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50, nullable: false)]
+    #[ORM\Column(length: 50, nullable: false, type: 'string', unique: true)]
     #[CustomAssert\CheckRoleName]
     private ?string $name = null;
 
@@ -59,16 +61,6 @@ final class Role implements RoleHierarchyInterface
         return $this;
     }
 
-    public function getLkpUsersCount(): ?int
-    {
-        return count($this->users);
-    }
-
-    public function getLkpGroupsCount(): ?int
-    {
-        return count($this->groups);
-    }
-
     public function addUser(User $user): self
     {
         $this->users[] = $user;
@@ -101,6 +93,16 @@ final class Role implements RoleHierarchyInterface
     public function getGroups(): ?Collection
     {
         return $this->groups;
+    }
+
+    public function getUsersCount(): int
+    {
+        return count($this->users);
+    }
+
+    public function getGroupsCount(): int
+    {
+        return count($this->groups);
     }
 
     public function __toString()

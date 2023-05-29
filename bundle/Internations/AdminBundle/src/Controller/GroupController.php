@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Internations\AdminBundle\Entity\Groups;
 use Internations\AdminBundle\Entity\Role;
+use Internations\AdminBundle\Enum\Roles;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,10 +26,10 @@ class GroupController extends AbstractController
     }
 
     #[Route('/internations/' . self::SUB_DOMAIN_NAME, name: 'internations_' . self::SUB_DOMAIN_NAME)]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted(Roles::USER_ROLE)]
     public function index(): Response
     {
-        $groups = $this->{self::SUB_DOMAIN_NAME . 'Repository'}->findAll();
+        $groups = $this->groupsRepository->findAll();
 
         return $this->render('@InternationsAdmin/' . self::SUB_DOMAIN_NAME . '/index.html.twig', [
             self::SUB_DOMAIN_NAME => $groups
@@ -49,7 +50,7 @@ class GroupController extends AbstractController
 
             try {
 
-                $this->{self::SUB_DOMAIN_NAME . 'Repository'}->create($newGroup);
+                $this->groupsRepository->create($newGroup);
 
             } catch (\Exception $e) {
 
@@ -70,10 +71,10 @@ class GroupController extends AbstractController
     }
 
     #[Route('/internations/' . self::SUB_DOMAIN_NAME . '/edit/{id}', name: 'internations_' . self::SUB_DOMAIN_NAME . '_edit')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted(Roles::ADMIN_ROLE)]
     public function edit($id, Request $request): Response
     {
-        $group = $this->{self::SUB_DOMAIN_NAME . 'Repository'}->find($id);
+        $group = $this->groupsRepository->find($id);
         $form = $this->createForm(GroupsFormType::class, $group);
         $form->handleRequest($request);
 
@@ -91,10 +92,10 @@ class GroupController extends AbstractController
     }
 
     #[Route('/internations/' . self::SUB_DOMAIN_NAME . '/delete/{id}', methods: ['GET', 'DELETE'], name: 'internations_' . self::SUB_DOMAIN_NAME . '_delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted(Roles::ADMIN_ROLE)]
     public function delete($id): Response
     {
-        $group = $this->{self::SUB_DOMAIN_NAME . 'Repository'}->find($id);
+        $group = $this->groupsRepository->find($id);
 
         if (!$group instanceof Groups) {
             throw new EntityNotFoundException('No group found!');

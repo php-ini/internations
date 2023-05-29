@@ -7,6 +7,7 @@ namespace Internations\AdminBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Internations\AdminBundle\Entity\Role;
+use Internations\AdminBundle\Enum\Roles;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,10 +25,10 @@ class RoleController extends AbstractController
     }
 
     #[Route('/internations/' . self::SUB_DOMAIN_NAME, name: 'internations_' . self::SUB_DOMAIN_NAME)]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted(Roles::USER_ROLE)]
     public function index(): Response
     {
-        $roles = $this->{self::SUB_DOMAIN_NAME . 'Repository'}->findAll();
+        $roles = $this->roleRepository->findAll();
 
         return $this->render('@InternationsAdmin/' .  self::SUB_DOMAIN_NAME . '/index.html.twig', [
              self::SUB_DOMAIN_NAME . 's' => $roles
@@ -35,7 +36,7 @@ class RoleController extends AbstractController
     }
 
     #[Route('/internations/' . self::SUB_DOMAIN_NAME . '/create', name: 'internations_' . self::SUB_DOMAIN_NAME . '_create')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted(Roles::ADMIN_ROLE)]
     public function create(Request $request): Response
     {
         $role = new Role();
@@ -68,10 +69,10 @@ class RoleController extends AbstractController
     }
 
     #[Route('/internations/' . self::SUB_DOMAIN_NAME . '/edit/{id}', name: 'internations_' . self::SUB_DOMAIN_NAME . '_edit')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted(Roles::ADMIN_ROLE)]
     public function edit($id, Request $request): Response
     {
-        $role = $this->{self::SUB_DOMAIN_NAME . 'Repository'}->find($id);
+        $role = $this->roleRepository->find($id);
         $form = $this->createForm(RoleFormType::class, $role);
         $form->handleRequest($request);
 
@@ -89,10 +90,10 @@ class RoleController extends AbstractController
     }
 
     #[Route('/internations/' . self::SUB_DOMAIN_NAME . '/delete/{id}', methods: ['GET', 'DELETE'], name: 'internations_' . self::SUB_DOMAIN_NAME . '_delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted(Roles::ADMIN_ROLE)]
     public function delete($id): Response
     {
-        $role = $this->{self::SUB_DOMAIN_NAME . 'Repository'}->find($id);
+        $role = $this->roleRepository->find($id);
 
         if (!$role instanceof Role) {
             throw new EntityNotFoundException('No ' . self::SUB_DOMAIN_NAME . ' found!');

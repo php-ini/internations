@@ -19,7 +19,7 @@ final class Version20230525210241 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql("CREATE TABLE IF NOT EXISTS `role` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(50) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB");
+        $this->addSql("CREATE TABLE IF NOT EXISTS `role` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(50) NOT NULL , PRIMARY KEY (`id`), UNIQUE `email` (`name`)) ENGINE = InnoDB");
     }
 
     public function down(Schema $schema): void
