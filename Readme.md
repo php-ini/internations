@@ -33,7 +33,7 @@ Head to http://internations.3ageeb.com to check how this bundle works in action.
 - The postman collection is included in the root directory in the file `Internations.postman_collection.json`.
 - Swagger Docs is also available for the APIs can be found in `/api/doc`.
 
-####API Examples:
+#### API Examples:
 - `/api/v1/users` [GET] To get all users.
 - `/api/v1/users/{id}` [GET] To get a specific user.
 - `/api/v1/users` [POST] To create a user.
