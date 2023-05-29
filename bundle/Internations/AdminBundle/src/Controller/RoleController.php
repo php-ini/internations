@@ -48,7 +48,7 @@ class RoleController extends AbstractController
 
             try {
 
-                $this->{self::SUB_DOMAIN_NAME . 'Repository'}->create($newRole);
+                $this->roleRepository->create($newRole);
 
             } catch (\Exception $e) {
 
@@ -58,7 +58,7 @@ class RoleController extends AbstractController
                 ]);
             }
 
-            $this->addFlash('success', 'Success! ' . self::SUB_DOMAIN_NAME . ' was added.');
+            $this->addFlash('success', self::SUB_DOMAIN_NAME . ' was added!');
 
             return $this->redirectToRoute('internations_' . self::SUB_DOMAIN_NAME);
         }
@@ -77,8 +77,8 @@ class RoleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->{self::SUB_DOMAIN_NAME . 'Repository'}->save($form->getData(), true);
-            $this->addFlash('success', 'Success! ' . self::SUB_DOMAIN_NAME . ' was saved.');
+            $this->roleRepository->save($form->getData(), true);
+            $this->addFlash('success', self::SUB_DOMAIN_NAME . ' was saved!');
 
             return $this->redirectToRoute('internations_' . self::SUB_DOMAIN_NAME);
         }
@@ -99,9 +99,9 @@ class RoleController extends AbstractController
             throw new EntityNotFoundException('No ' . self::SUB_DOMAIN_NAME . ' found!');
         }
 
-        $this->{self::SUB_DOMAIN_NAME . 'Repository'}->remove($role, true);
+        $this->roleRepository->remove($role, true);
 
-        $this->addFlash('success', 'Success! ' . self::SUB_DOMAIN_NAME . ' was deleted.');
+        $this->addFlash('success', self::SUB_DOMAIN_NAME . ' was deleted!');
 
         return $this->redirectToRoute('internations_' . self::SUB_DOMAIN_NAME);
     }

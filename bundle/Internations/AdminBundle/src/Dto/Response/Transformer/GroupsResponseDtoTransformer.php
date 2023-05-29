@@ -27,6 +27,7 @@ class GroupsResponseDtoTransformer extends AbstractResponseDtoTransformer
     public function transformFromObject($group, $isNested = false): GroupsResponseDto
     {
         $dto = new GroupsResponseDto($group);
+        $dto->id = $group->getId();
         $dto->name = $group->getName();
         if($isNested) {
             $dto->users = $this->userResponseDtoTransformer->transformFromObjects($group->getUsers());

@@ -9,6 +9,9 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 class UserResponseDto
 {
+    #[Serialization\Type("int")]
+    public int $id;
+
     #[Serialization\Type("string")]
     public string $name;
 

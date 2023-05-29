@@ -61,7 +61,7 @@ class UserController extends AbstractController
                 ]);
             }
 
-            $this->addFlash('success', 'Success! User was added.');
+            $this->addFlash('success', 'User was added!');
 
             return $this->redirectToRoute('internations_users');
         }
@@ -81,7 +81,7 @@ class UserController extends AbstractController
         if ($request->isMethod('POST')) {
             $newUser = $this->userService->transformFromArray((int)$id, $request->get('user_form'));
             $this->userRepository->save($newUser, true);
-            $this->addFlash('success', 'Success! User was saved.');
+            $this->addFlash('success', 'User was saved!');
 
             return $this->redirectToRoute('internations_users');
         }
@@ -104,7 +104,7 @@ class UserController extends AbstractController
 
         $this->userRepository->remove($user, true);
 
-        $this->addFlash('success', 'Success! User was deleted.');
+        $this->addFlash('success', 'User was deleted!');
 
         return $this->redirectToRoute('internations_users');
     }

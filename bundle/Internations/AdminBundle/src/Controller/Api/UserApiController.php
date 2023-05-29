@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Internations\AdminBundle\Controller\Api;
 
-use Internations\AdminBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,6 +18,7 @@ class UserApiController extends AbstractApiController
     const VERSION = 1;
     const STATUS_SUCCESS = 'success';
     const STATUS_FAILED = 'failed';
+    const NOT_FOUND_MESSAGE = 'User not found!';
 
     public function __construct(
         private UserRepository $userRepository,
@@ -47,7 +47,7 @@ class UserApiController extends AbstractApiController
         if (!$user) {
             $data = [
                 'status' => self::STATUS_FAILED,
-                'errors' => "User not found",
+                'errors' => self::NOT_FOUND_MESSAGE,
             ];
 
             return $this->respond($data, Response::HTTP_NOT_FOUND);
@@ -110,7 +110,7 @@ class UserApiController extends AbstractApiController
         if (!$user) {
             $data = [
                 'status' => self::STATUS_FAILED,
-                'errors' => "User not found",
+                'errors' => self::NOT_FOUND_MESSAGE,
             ];
 
             return $this->respond($data, Response::HTTP_NOT_FOUND);
@@ -166,7 +166,7 @@ class UserApiController extends AbstractApiController
         if (!$user) {
             $data = [
                 'status' => self::STATUS_FAILED,
-                'errors' => "User not found",
+                'errors' => self::NOT_FOUND_MESSAGE,
             ];
 
             return $this->respond($data, Response::HTTP_NOT_FOUND);

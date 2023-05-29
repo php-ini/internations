@@ -24,13 +24,14 @@ class UserResponseDtoTransformer extends AbstractResponseDtoTransformer
     public function transformFromObject($user, $isNested = false): UserResponseDto
     {
         $dto = new UserResponseDto($user);
+        $dto->id = $user->getId();
         $dto->name = $user->getName();
         $dto->email = $user->getEmail();
         $dto->password = $user->getPassword();
         $dto->isActive = $user->isActive();
 
         if ($isNested) {
-            $dto->roles = $this->roleResponseDtoTransformer->transformFromObjects($user->getRoles());
+            $dto->roles = $this->roleResponseDtoTransformer->transformFromObjects($user->getRolesObjects());
             $dto->groups = $this->groupsResponseDtoTransformer->transformFromObjects($user->getGroups());
         }
 

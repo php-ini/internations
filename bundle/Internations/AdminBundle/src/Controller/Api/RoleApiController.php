@@ -4,47 +4,47 @@ declare(strict_types=1);
 
 namespace Internations\AdminBundle\Controller\Api;
 
-use Internations\AdminBundle\Dto\Response\Transformer\GroupsResponseDtoTransformer;
-use Internations\AdminBundle\Factory\GroupFactory;
-use Internations\AdminBundle\Repository\GroupsRepository;
-use Internations\AdminBundle\Service\GroupService;
+use Internations\AdminBundle\Dto\Response\Transformer\RoleResponseDtoTransformer;
+use Internations\AdminBundle\Factory\RoleFactory;
+use Internations\AdminBundle\Repository\RoleRepository;
+use Internations\AdminBundle\Service\RoleService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class GroupsApiController extends AbstractApiController
+class RoleApiController extends AbstractApiController
 {
     const VERSION = 1;
     const STATUS_SUCCESS = 'success';
     const STATUS_FAILED = 'failed';
-    const NOT_FOUND_MESSAGE = 'Group not found!';
+    const NOT_FOUND_MESSAGE = 'Role not found!';
 
     public function __construct(
-        private GroupsRepository $groupsRepository,
-        private GroupService $groupService,
-        private GroupFactory $groupFactory,
-        private GroupsResponseDtoTransformer $groupsResponseDtoTransformer,
+        private RoleRepository $roleRepository,
+        private RoleService $roleService,
+        private RoleFactory $roleFactory,
+        private RoleResponseDtoTransformer $roleResponseDtoTransformer,
     )
     {
     }
 
-    #[Route('/api/v' . self::VERSION . '/groups', methods: ['GET'], name: 'internations_api_get_groups')]
+    #[Route('/api/v' . self::VERSION . '/roles', methods: ['GET'], name: 'internations_api_get_roles')]
     public function all(): Response
     {
-        $groups = $this->groupsRepository->findAll();
+        $roles = $this->roleRepository->findAll();
 
-        $dto = $this->groupsResponseDtoTransformer->transformFromObjects($groups, true);
+        $dto = $this->roleResponseDtoTransformer->transformFromObjects($roles, true);
 
         return $this->respond($dto);
     }
 
-    #[Route('/api/v' . self::VERSION . '/groups/{id}', methods: ['GET'], name: 'internations_api_get_group')]
+    #[Route('/api/v' . self::VERSION . '/roles/{id}', methods: ['GET'], name: 'internations_api_get_role')]
     public function get($id): Response
     {
-        $groups = $this->groupsRepository->find($id);
+        $role = $this->roleRepository->find($id);
 
-        if (!$groups) {
+        if (!$role) {
             $data = [
                 'status' => self::STATUS_FAILED,
                 'errors' => self::NOT_FOUND_MESSAGE,
@@ -53,12 +53,12 @@ class GroupsApiController extends AbstractApiController
             return $this->respond($data, Response::HTTP_NOT_FOUND);
         }
 
-        $groupDto = $this->groupsResponseDtoTransformer->transformFromObject($groups, true);
+        $userDto = $this->roleResponseDtoTransformer->transformFromObject($role, true);
 
-        return $this->respond($groupDto);
+        return $this->respond($userDto);
     }
 
-    #[Route('/api/v' . self::VERSION . '/groups', methods: ['POST'], name: 'internations_api_create_group')]
+    #[Route('/api/v' . self::VERSION . '/roles', methods: ['POST'], name: 'internations_api_create_role')]
     public function create(Request $request, ValidatorInterface $validator): Response
     {
         try {
@@ -68,16 +68,16 @@ class GroupsApiController extends AbstractApiController
                 throw new \Exception();
             }
 
-            $groupEntity = $this->groupFactory->create($data);
+            $roleEntity = $this->roleFactory->create($data);
 
-            $errors = $validator->validate($groupEntity);
+            $errors = $validator->validate($roleEntity);
 
             if (count($errors) === 0) {
 
-                $this->groupsRepository->create($groupEntity, true);
+                $this->roleRepository->create($roleEntity, true);
 
                 $data = [
-                    'success' => "Group created successfully",
+                    'success' => "Role created successfully",
                 ];
 
                 return $this->respond($data);
@@ -95,12 +95,12 @@ class GroupsApiController extends AbstractApiController
         }
     }
 
-    #[Route('/api/v' . self::VERSION . '/groups/{id}', methods: ['PUT'], name: 'internations_api_update_group')]
+    #[Route('/api/v' . self::VERSION . '/roles/{id}', methods: ['PUT'], name: 'internations_api_update_role')]
     public function update(Request $request, ValidatorInterface $validator, int $id): Response
     {
-        $group = $this->groupsRepository->find($id);
+        $role = $this->roleRepository->find($id);
 
-        if (!$group) {
+        if (!$role) {
             $data = [
                 'status' => self::STATUS_FAILED,
                 'errors' => self::NOT_FOUND_MESSAGE,
@@ -116,15 +116,15 @@ class GroupsApiController extends AbstractApiController
                 throw new \Exception();
             }
 
-            $groupEntity = $this->groupService->updateEntity($group, $data);
+            $roleEntity = $this->roleService->updateEntity($role, $data);
 
-            $errors = $validator->validate($groupEntity);
+            $errors = $validator->validate($roleEntity);
 
             if (count($errors) === 0) {
-                $this->groupsRepository->save($groupEntity, true);
+                $this->roleRepository->save($roleEntity, true);
                 $data = [
                     'status' => self::STATUS_SUCCESS,
-                    'success' => "Group updated successfully",
+                    'success' => "Role updated successfully",
                 ];
 
                 return $this->respond($data);
@@ -142,12 +142,12 @@ class GroupsApiController extends AbstractApiController
         }
     }
 
-    #[Route('/api/v' . self::VERSION . '/groups/{id}', methods: ['DELETE'], name: 'internations_api_delete_group')]
+    #[Route('/api/v' . self::VERSION . '/roles/{id}', methods: ['DELETE'], name: 'internations_api_delete_role')]
     public function delete($id): Response
     {
-        $group = $this->groupsRepository->find($id);
+        $role = $this->roleRepository->find($id);
 
-        if (!$group) {
+        if (!$role) {
             $data = [
                 'status' => self::STATUS_FAILED,
                 'errors' => self::NOT_FOUND_MESSAGE,
@@ -156,11 +156,11 @@ class GroupsApiController extends AbstractApiController
             return $this->respond($data, Response::HTTP_NOT_FOUND);
         }
 
-        $this->groupsRepository->remove($group, true);
+        $this->roleRepository->remove($role, true);
 
         $data = [
             'status' => self::STATUS_SUCCESS,
-            'success' => "Group deleted successfully",
+            'success' => "Role deleted successfully",
         ];
 
         return $this->respond($data);

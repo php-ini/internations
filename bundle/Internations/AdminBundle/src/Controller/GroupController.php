@@ -37,7 +37,7 @@ class GroupController extends AbstractController
     }
 
     #[Route('/internations/' . self::SUB_DOMAIN_NAME . '/create', name: 'internations_' . self::SUB_DOMAIN_NAME . '_create')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted(Roles::ADMIN_ROLE)]
     public function create(Request $request): Response
     {
         $groups = new Groups();
@@ -60,7 +60,7 @@ class GroupController extends AbstractController
                 ]);
             }
 
-            $this->addFlash('success', 'Success! Group was added.');
+            $this->addFlash('success', 'Group was added!');
 
             return $this->redirectToRoute('internations_' . self::SUB_DOMAIN_NAME);
         }
@@ -79,8 +79,8 @@ class GroupController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->{self::SUB_DOMAIN_NAME . 'Repository'}->save($form->getData(), true);
-            $this->addFlash('success', 'Success! Group was saved.');
+            $this->groupsRepository->save($form->getData(), true);
+            $this->addFlash('success', 'Group was saved!');
 
             return $this->redirectToRoute('internations_' . self::SUB_DOMAIN_NAME);
         }
@@ -101,9 +101,9 @@ class GroupController extends AbstractController
             throw new EntityNotFoundException('No group found!');
         }
 
-        $this->{self::SUB_DOMAIN_NAME . 'Repository'}->remove($group, true);
+        $this->groupsRepository->remove($group, true);
 
-        $this->addFlash('success', 'Success! Group was deleted.');
+        $this->addFlash('success', 'Group was deleted!');
 
         return $this->redirectToRoute('internations_' . self::SUB_DOMAIN_NAME);
     }

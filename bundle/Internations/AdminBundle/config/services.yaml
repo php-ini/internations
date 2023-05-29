@@ -42,6 +42,8 @@ services:
 
     Internations\AdminBundle\Controller\Api\GroupsApiController: ~
 
+    Internations\AdminBundle\Controller\Api\RoleApiController: ~
+
     Internations\AdminBundle\Dto\Response\Transformer\UserResponseDtoTransformer:
         lazy: true
 
@@ -52,6 +54,14 @@ services:
         lazy: true
 
     Internations\AdminBundle\Factory\UserFactory: ~
+
+    Internations\AdminBundle\Factory\GroupFactory: ~
+
+    Internations\AdminBundle\Factory\RoleFactory: ~
+
+    Internations\AdminBundle\Service\GroupService: ~
+
+    Internations\AdminBundle\Service\RoleService: ~
 
     Internations\AdminBundle\Security\ApiTokenAuthenticator: ~
 

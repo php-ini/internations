@@ -10,6 +10,9 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 class GroupsResponseDto
 {
+    #[Serialization\Type("int")]
+    public int $id;
+
     #[Serialization\Type("string")]
     public string $name;
 
