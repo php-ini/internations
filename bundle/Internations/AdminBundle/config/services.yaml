@@ -53,3 +53,5 @@ services:
 
     Internations\AdminBundle\Factory\UserFactory: ~
 
+    Internations\AdminBundle\Security\ApiTokenAuthenticator: ~
+
