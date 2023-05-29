@@ -30,7 +30,8 @@ Head to http://internations.3ageeb.com to check how this bundle works in action.
 - Users can see the listings but has no mutations rights.
 
 ## API calls
-The postman collection is included in the root directory in the file `Internations.postman_collection.json`.
+- The postman collection is included in the root directory in the file `Internations.postman_collection.json`.
+- Swagger Docs is also available for the APIs can be found in `/api/doc`.
 
 ####API Examples:
 - `/api/v1/users` [GET] To get all users.
